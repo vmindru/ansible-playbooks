@@ -1,0 +1,53 @@
+---
+- hosts: all 
+
+  tasks:
+    - name: install git 
+      yum: name=git state=installed
+    
+    - name: add stack user
+      user: 
+          name: stack
+          state: present
+          group: wheel
+
+    - name:  add sudo for stack user
+      lineinfile:
+        dest: /etc/sudoers.d/stack
+        create: yes
+        state: present
+        line: 'stack ALL=(ALL) NOPASSWD: ALL'
+
+    - name: clone the devstack repo
+      git: 
+        repo:  https://github.com/openstack-dev/devstack.git
+        accept_hostkey: yes 
+        clone: yes 
+        dest: /home/stack/devstack
+        recursive: yes
+      become: yes
+      become_user: stack
+
+    - name: add localrc file
+      template: 
+        dest: /home/stack/devstack/localrc
+        force: yes
+        src: ./localrc.jnl
+      become: yes
+      become_user: stack
+
+    - name: deploy stack, run stack.sh , WARNING TAKES LONG TIME
+      shell: ./stack.sh
+      args:
+        chdir: /home/stack/devstack
+        creates: /home/stack/devstack/deployed
+      become: yes
+      become_user: stack 
+
+
+
+
+
+            
+
+

@@ -1,0 +1,6 @@
+---
+- hosts: cloudatcost
+  vars_file:
+  - ../vmindru-secrets/cloudatcost/main.yml
+  roles:
+    - {role: cloudatcost-setup }

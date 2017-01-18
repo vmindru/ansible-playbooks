@@ -1,0 +1,12 @@
+ADMIN_PASSWORD=devstack
+MYSQL_PASSWORD=devstack
+RABBIT_PASSWORD=devstack
+SERVICE_PASSWORD=devstack
+SERVICE_TOKEN=devstack
+
+SWIFT_HASH=66a3d6b56c1f479c8b4e70ab5c2000f5
+SWIFT_REPLICAS=1
+
+disable_all_services
+enable_service key swift mysql
+
