@@ -1,0 +1,24 @@
+---
+- hosts: all
+
+  vars: 
+   rpm:
+     name: "name"
+     repo_name: "epel"
+     repo_baseurl: "https://download.fedoraproject.org/pub/epel/$releasever/$basearch/"
+     gpgkey: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7"
+     rpm_list:
+       - 'radcli'
+  
+  tasks:
+  - name: "add repo {{ rpm.repo_name }}"
+    yum_repository:
+      name: "{{ rpm.repo_name }}"
+      baseurl:  "{{ rpm.repo_baseurl }}"
+      gpgkey: "{{ rpm.gpgkey }}"
+      
+  - name: "install {{ rpm.name }}"
+    yum: 
+      name:  "{{ item }}"
+      state: installed 
+    with_items: "{{ rpm.rpm_list }}" 
